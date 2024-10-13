@@ -1,10 +1,29 @@
-import Footer from "../components/Footer"
-import NevbarBack from "../components/NevbarBack"
-import Link from "next/link"
+"use client"; // เพิ่ม use client
+
+import Footer from "../components/Footer";
+import NevbarBack from "../components/NevbarBack";
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation"; // ใช้ useRouter จาก next/navigation
 
 export default function Page() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [phone, setPhone] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // ส่งข้อมูลไปยัง BillPage
+    router.push({
+      pathname: "/bill",
+      query: { fullname, phone }
+    });
+  };
   return (
     <>
+
       <div as="nav" className="bg-white">
         <NevbarBack />
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 lg:px-8">
@@ -17,63 +36,67 @@ export default function Page() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm border border-gray-300 rounded-lg p-6 shadow-lg">
-            <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-600">
+            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-600">
               เข้าสู่ระบบสมาชิก
             </h2>
-            <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form action="#" method="POST" className="space-y-6">
-                <div>
-                  <label htmlFor="email" className="mt-10 text-center text-1xl font-bold leading-9 tracking-tight text-gray-600">
-                    อีเมล
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      autoComplete="email"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="fullname" className="block text-1xl font-medium leading-6 text-gray-900">
+                  ชื่อ-นามสกุล
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="fullname"
+                    name="fullname"
+                    type="text"
+                    required
+                    value={fullname}
+                    onChange={(e) => setFullname(e.target.value)}
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                 </div>
+              </div>
 
-                <div>
-                  <div className="flex items-center justify-between">
-                    <label htmlFor="password" className="block text-1xl font-medium leading-6 text-gray-900">
-                      รหัสผ่าน
-                    </label>
-                  </div>
-                  <div className="mt-2">
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      required
-                      autoComplete="current-password"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
+              <div>
+                <label htmlFor="phone" className="block text-1xl font-medium leading-6 text-gray-900">
+                  เบอร์โทรศัพท์
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    pattern="[0-9]{10}"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                 </div>
+              </div>
 
-                <div>
-                      <a href="/promotion" className="flex w-full justify-center rounded-md bg-orange-400 px-3 py-1.5 text-1xl font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        เข้าสู่ระบบ
-                      </a>
-                </div>
-              </form>
+              <div>
+                <button
+                  type="submit"
+                  className="flex w-full justify-center rounded-md bg-orange-400 px-3 py-1.5 text-1xl font-semibold leading-6 text-white shadow-sm hover:bg-orange-500"
+                >
+                  เข้าสู่ระบบ
+                </button>
+              </div>
+            </form>
 
-              <p className="mt-10 text-center text-1xl text-gray-500 pb-8">
-                ต้องการสมัครสมาชิก คลิก{' '}
-                <a href="/singin" className="font-semibold leading-6 text-orange-400 hover:text-orange-600">
-                  สมัครสมาชิก
-                </a>
-              </p>
-            </div>
+            <p className="mt-10 text-center text-1xl text-gray-500 pb-8">
+              ต้องการสมัครสมาชิก คลิก{' '}
+              <Link href="/singin" className="font-semibold leading-6 text-orange-400 hover:text-orange-600">
+                สมัครสมาชิก
+              </Link>
+            </p>
           </div>
-          <Footer />
         </div>
+
+        <Footer />
       </div>
+
     </>
-  )
+  );
 }
