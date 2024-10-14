@@ -1,5 +1,0 @@
-{
-    "rewrites": [
-      { "source": "/", "destination": "/Batch Overview.html" }
-    ]
-  }
